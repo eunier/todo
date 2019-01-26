@@ -25,3 +25,23 @@ def add_new_todo(request):
         my_new_todo.save()
 
     return redirect('index')
+
+
+def complete_todo(request, todo_id):
+    mytodo = Todo.objects.get(pk=todo_id)
+    if mytodo.complete:
+        mytodo.complete = False
+    else:
+        mytodo.complete = True
+    mytodo.save()
+    return redirect('index')
+
+
+def delete_todo(request):
+    Todo.objects.filter(complete__exact=True).delete()
+    return redirect('index')
+
+
+def delete_all(request):
+    Todo.objects.all().delete()
+    return redirect('index')

@@ -27,11 +27,12 @@
 
                     </h2>
 
-                    <form action="#" method="POST" role="form">
-
+                    <form action="{% url 'add' %}" method="POST" role="form">
+                        {% csrf_token %}
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="A Django TODO">
+                                {{ form.text }}
+                                <!-- <input type="text" class="form-control" placeholder="A Django TODO"> -->
                                 <span class="input-group-btn">
 								  <button type="submit" class="btn btn-success" id="add-btn">Do it <i
                                           class="fas fa-check-circle"></i>
@@ -45,24 +46,43 @@
                     <div class="row t10">
                         <div class="col-lg-12">
                             <div class="btn-toolbar">
-
-                                <button type="button" class="btn btn-danger btn-block">
-                                    <i class="fas fa-trash-alt"></i> DELETE COMPLETED
-                                </button>
-
-
-                                <button type="button" class="btn btn-danger btn-block">
-                                    <i class="fas fa-trash-alt"></i> Assignment
-                                </button>
+                                <a href="{% url 'delete' %}">
+                                    <button type="button" class="btn btn-danger btn-block">
+                                        <i class="fas fa-trash-alt"></i> DELETE COMPLETED
+                                    </button>
+                                </a>
+                                <br>
+                                <a href="{% url 'delete_all' %}">
+                                    <button type="button" class="btn btn-danger btn-block">
+                                        <i class="fas fa-trash-alt"></i> DELETE ALL
+                                    </button>
+                                </a>
 
                             </div>
                         </div>
                     </div>
 
                     <ul class="list-group t20">
+                        {% for todo in mytodo %}
+                            {% if todo.complete %}
+                                <li class="list-group-item todo-completed">
+                                    <a href="{% url 'complete' todo.id %}">
+                                        {{ todo.todotext }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'complete' todo.id %}">
+                                        {{ todo.todotext }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <!--
                         <li class="list-group-item">Record Django Videos</li>
                         <li class="list-group-item todo-completed">Make youtube videos</li>
                         <li class="list-group-item">Go to swimming</li>
+                        -->
                     </ul>
                 </div>
             </div>
